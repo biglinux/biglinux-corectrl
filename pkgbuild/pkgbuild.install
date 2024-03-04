@@ -3,20 +3,40 @@
 	# do something here
 #}
 
-## arg 1:  the new package version
-#post_install() {
-    # do something here
-#}
+# arg 1:  the new package version
+post_install() {
+  #enable editing
+  if [ -z "$(grep amdgpu.ppfeaturemask /etc/default/grub)" ];then
+    sed -i '/GRUB_CMDLINE_LINUX_DEFAULT/s/\"/ amdgpu.ppfeaturemask=0xfffd7fff"/2' /etc/default/grub
+    update-grub
+  fi
+
+  #run without asking for password
+cat << EOF > /etc/polkit-1/rules.d/90-corectrl.rules
+polkit.addRule(function(action, subject) {
+    if ((action.id == "org.corectrl.helper.init" ||
+         action.id == "org.corectrl.helperkiller.init") &&
+        subject.local == true &&
+        subject.active == true &&
+        subject.isInGroup("$(who | awk 'NR==1{print $1}')")) {
+            return polkit.Result.YES;
+    }
+});
+EOF
+
+  #enable autostart
+  cp /usr/share/applications/org.corectrl.CoreCtrl.desktop /home/$(who | awk 'NR==1{print $1}')/.config/autostart/org.corectrl.CoreCtrl.desktop
+}
 
 ## arg 2:  the old package version
 #pre_upgrade() {
 	# do something here
 #}
 
-## arg 2:  the old package version
-#post_upgrade() {
-	#post_install
-#}
+# arg 2:  the old package version
+post_upgrade() {
+	post_install
+}
 
 ## arg 1:  the old package version
 #pre_remove() {

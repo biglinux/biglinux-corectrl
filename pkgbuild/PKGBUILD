@@ -1,8 +1,8 @@
 # Maintainer: Barnabé di Kartola <barnabedikartola@gmail.com>
 
-pkgname=biglinux-package-template
-pkgdesc="Package template for biglinux"
-# depends=('')
+pkgname=biglinux-corectrl
+pkgdesc="Metapackage for biglinux-corectrl"
+depends=('corectrl')
 # makedepends=('')
 # conflicts=('')
 pkgver=$(date +%y.%m.%d)
