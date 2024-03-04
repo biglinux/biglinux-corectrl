@@ -25,7 +25,8 @@ polkit.addRule(function(action, subject) {
 EOF
 
   #enable autostart
-  cp /usr/share/applications/org.corectrl.CoreCtrl.desktop /home/$(who | awk 'NR==1{print $1}')/.config/autostart/org.corectrl.CoreCtrl.desktop
+  cp /usr/share/applications/org.corectrl.corectrl.desktop /home/$(who | awk 'NR==1{print $1}')/.config/autostart/org.corectrl.CoreCtrl.desktop
+
 }
 
 ## arg 2:  the old package version
