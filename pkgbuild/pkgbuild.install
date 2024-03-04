@@ -26,6 +26,7 @@ EOF
 
   #enable autostart
   cp /usr/share/applications/org.corectrl.corectrl.desktop /home/$(who | awk 'NR==1{print $1}')/.config/autostart/org.corectrl.CoreCtrl.desktop
+  chown $(who | awk 'NR==1{print $1}'):$(who | awk 'NR==1{print $1}') /home/$(who | awk 'NR==1{print $1}')/.config/autostart/org.corectrl.CoreCtrl.desktop
 
 }
 
