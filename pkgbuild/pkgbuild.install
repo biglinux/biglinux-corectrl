@@ -46,7 +46,13 @@ post_upgrade() {
 #}
 
 ## arg 1:  the old package version
-#post_remove() {
-	# do something here
-#}
- 
+post_remove() {
+  if [ -n "$(grep amdgpu.ppfeaturemask /etc/default/grub)" ];then
+    sed -i '/GRUB_CMDLINE_LINUX_DEFAULT/s/ amdgpu.ppfeaturemask=0xfffd7fff//' /etc/default/grub
+    update-grub
+  fi
+  rm /home/$(who | awk 'NR==1{print $1}')/.config/autostart/org.corectrl.CoreCtrl.desktop
+  rm /etc/polkit-1/rules.d/90-corectrl.rules
+  rm -r /home/$(who | awk 'NR==1{print $1}')/.config/corectrl
+}
+
